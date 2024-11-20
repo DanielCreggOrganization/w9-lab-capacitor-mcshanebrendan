@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Geolocation</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h2>Current Position</h2>
+
+  @if (hasCoords) {
+    <ion-card>
+      <ion-card-content>
+        <p><strong>Latitude:</strong> {{ position?.coords?.latitude ?? 'N/A' }}</p>
+        <p><strong>Longitude:</strong> {{ position?.coords?.longitude ?? 'N/A' }}</p>
+        <p><strong>Accuracy:</strong> {{ position?.coords?.accuracy ?? 'N/A' }} meters</p>
+      </ion-card-content>
+    </ion-card>
+  } @else {
+    <ion-text color="medium">Fetching location...</ion-text>
+  }
+</ion-content>
