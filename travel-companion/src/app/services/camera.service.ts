@@ -1,30 +1,34 @@
-// src/app/services/camera.service.ts
 import { Injectable } from '@angular/core';
-// Import Capacitor Camera plugin and its types
-import { Camera, CameraResultType } from '@capacitor/camera';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
-// Injectable decorator marks this as a service that can be dependency injected
 @Injectable({
-  providedIn: 'root'  // Service is provided at the root level, creating a singleton instance
+  providedIn: 'root',
 })
 export class CameraService {
   /**
-   * Takes a picture using the device's camera
-   * @returns Promise<string | undefined> Returns base64 encoded image string or undefined if failed
+   * Takes a picture using the device's camera or file picker
+   * @returns Promise<string | undefined>
    */
   async takePicture(): Promise<string | undefined> {
-    // Use Capacitor Camera API to capture photo
-    const image = await Camera.getPhoto({
-      // Request base64 format for easy display in HTML img tag
-      resultType: CameraResultType.Base64,
-      // Set image quality (0-100)
-      quality: 90
-    });
+    try {
+      const image = await Camera.getPhoto({
+        resultType: CameraResultType.Base64,
+        source: CameraSource.Camera, // Force camera use
+        quality: 90,
+      });
 
-    // Convert base64 string to data URL format for img src attribute
-    // Returns undefined if no image was captured
-    return image.base64String 
-      ? `data:image/jpeg;base64,${image.base64String}` 
-      : undefined;
+      return image.base64String
+        ? `data:image/jpeg;base64,${image.base64String}`
+        : undefined;
+    } catch (error: any) {
+      if (error.message === 'User cancelled photos app') {
+        console.log('User cancelled the camera or photo selection.');
+        return undefined; // Gracefully return undefined
+      }
+
+      // Log other errors
+      console.error('Error taking picture:', error);
+      throw error; // Rethrow for unexpected issues
+    }
   }
 }
