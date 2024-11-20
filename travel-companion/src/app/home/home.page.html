@@ -15,5 +15,17 @@
         <ion-img [src]="capturedImage" alt="Captured Image"></ion-img>
       </div>
     }
+
+    <!-- Display device information -->
+    @if (deviceInfo) {
+      <div class="device-info">
+        <h3>Device Info:</h3>
+        <p><strong>Model:</strong> {{ deviceInfo.model }}</p>
+        <p><strong>OS:</strong> {{ deviceInfo.operatingSystem }}</p>
+        <p><strong>Platform:</strong> {{ deviceInfo.platform }}</p>
+        <p><strong>Language:</strong> {{ deviceInfo.language }}</p>
+        <p><strong>User Agent:</strong> {{ deviceInfo.userAgent }}</p>
+      </div>
+    }
   </div>
 </ion-content>
